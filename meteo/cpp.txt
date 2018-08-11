@@ -1,0 +1,45 @@
+// C++ version
+int __init init_module()
+{
+  try {
+  if (count < 1 || count > 256)
+    return -EINVAL;
+  
+  {
+    // allocate memory
+    int k;
+    AllDev = (struct metei_item **)
+      kmalloc(sizeof(struct meteo_item*)*count,
+	      GFP_KERNEL);
+    if (! AllDev)
+      {
+	printk(KERN_ALERT "'meteo': out of memory (1)\n");
+	return -ENOMEM;
+      }
+    // always fill allocated memory with zeros
+    memset(AllDev, 0, count*sizeof(struct meteo_item*));
+    for (k=0; k < count; k++)
+      {
+	
+      }
+  }
+  {
+    int M = register_chrdev(major, METEO_NAME, &fops);
+    if (M < 0) // major < 0
+      {
+	throw exception1(M);
+	printk(KERN_ALERT "Error: %d\n", M);
+	return M;
+      }
+    else if (major == 0)
+      {
+	major = M;
+      }
+  }
+  printk(KERN_ALERT "'%s' registered with number %d\n", DEVICE_NAME, major);
+  return 0;
+  } catch (exception1)
+  {
+    kfree(...);
+  }
+}
